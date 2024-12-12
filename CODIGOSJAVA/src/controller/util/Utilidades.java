@@ -1,82 +1,34 @@
 package controller.util;
 
-import java.util.Random;
+import java.util.Scanner;
 
-//Por Cael Soto
+// por cael soto
 
 public class Utilidades {
 
-    public static boolean validar(String num) {
-        boolean band = true;
-        if(num.charAt(0) == '-') {
-            num = num.substring(1);
-        }
-        
-        int cont_p = 0; 
-        for(int i = 0; i < num.length(); i++) {
-            char c = num.charAt(i);
-            if(!Character.isDigit(c) && c != '.') {
-                band = false;
-                break;
+    /* Ahora crearemos un método global para las respuestas char (s/n) ya que estas son las que más usé, este método permite validar las
+    respuestas del usuario para opciones tipo 's' o 'n'. el objetivo es asegurarse de que el usuario solo ingrese esas dos opciones y,
+    si ingresa algo incorrecto, el programa le pedirá la respuesta nuevamente. */
+    
+    public static char obtenerRespuesta(Scanner sc, String mensaje) {
+        char respuesta; // variable para almacenar la respuesta del usuario
+        do {
+            System.out.print(mensaje); // mostrar el mensaje solicitando una respuesta
+            respuesta = sc.next().toLowerCase().charAt(0); // leer la primera letra de la entrada y convertirla a minúscula
+            // verificar que la respuesta sea válida (s o n)
+            if (respuesta != 's' && respuesta != 'n') {
+                System.out.println("respuesta incorrecta. Querido usuario por favor ingrese 's' para si o 'n' para no."); // mensaje de error
             }
-            if(c == '.') {
-                cont_p++; 
-            }
-        }
-        
-        if(cont_p > 1) {
-            band = false;
-        }
-        
-        return band;
+        } while (respuesta != 's' && respuesta != 'n'); // repetir hasta que la respuesta sea válida
+        sc.nextLine(); // consumir el salto de línea pendiente después de la entrada
+        return respuesta; // retornar la respuesta válida
     }
 
-    public static int transformStringInt(String num) {
-        int resp = 0;
-        if(validar(num)) {
-            resp = Integer.parseInt(num);
-        }
-        return resp;
-    }
-
-    public static float transformStringFloat(String num) {
-        float resp = 0.0f;
-        if(validar(num)) {
-            resp = Float.parseFloat(num);
-        }
-        return resp;
-    }
-
-    public static int generarNumeroRango(int minimo, int maximo){
-        Random random = new Random();
-        /*2 - 10
-         * 2 + 11 - 2 ------- 2 + (9) , osea, rango del 0 al 9 */
-        return minimo + random.nextInt((maximo + 1) - minimo);
-    }
-
-    public static float generarNumeroRangoFloat(float minimo, float maximo){
-        Random random = new Random();
-        return minimo + (random.nextFloat() * (maximo - minimo));
-    }
-
-    public static float redondear(float num){
-        float aux = num*100.00f;
-        float aux1 = (float) ((int) aux);
-        return (aux1/100.00f);
-        //return (float) (Math.round(num*100.00)/100.00);
-    }
-
-    public static double transformStringDouble(String num) {
-        double resp = 0.0;
-        if (validar(num)) {
-            resp = Double.parseDouble(num);
-        }
-        return resp;
-    }
-
-    //Opcional: método para validar que la clave de zona esté en el rango permitido
+    // opcional: método para validar que la clave de zona esté en el rango permitido
+    // en caso de no usarlo, se debe utilizar lo que sería el validador del programa por defecto
+    
     public static boolean validarClaveZona(int clave) {
-        //claves válidas de zona:
+        // claves válidas de zona:
         return clave == 12 || clave == 15 || clave == 18 || clave == 19 || clave == 23 || clave == 25 || clave == 29 || clave == 31;
     }
 }
